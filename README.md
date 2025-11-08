@@ -1,5 +1,22 @@
 # 社交反假新闻系统 / Social Anti-Fake News System
 
+## Group Information
+
+### Your Group Name
+To be determined
+
+### Member Details (Name and Student ID)
+
+- **Wang Yutao** - 202320257
+- **Zhang Ge** - 20232062
+- **Tang Ziyu** - 20232046
+
+### The URL of the Deployed Website
+
+To be deployed
+
+---
+
 ## 中文说明
 
 ### 项目简介
