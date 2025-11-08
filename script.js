@@ -15,9 +15,16 @@ class AntiFakeNewsSystem {
     }
 
     init() {
-        this.loadMockData();
-        this.bindEvents();
-        this.renderHomePage();
+        try {
+            this.loadMockData();
+            this.bindEvents();
+            this.renderHomePage();
+            console.log('Application initialized successfully');
+            console.log('News count:', this.news.length);
+            console.log('Comments count:', this.comments.length);
+        } catch (error) {
+            console.error('Error initializing application:', error);
+        }
     }
 
     // Load mock data
@@ -570,11 +577,23 @@ class AntiFakeNewsSystem {
 
     // Render home page
     renderHomePage() {
-        const filteredNews = this.getFilteredNews();
-        const paginatedNews = this.getPaginatedNews(filteredNews);
-        
-        this.renderNewsList(paginatedNews);
-        this.renderPagination(filteredNews.length);
+        try {
+            const filteredNews = this.getFilteredNews();
+            const paginatedNews = this.getPaginatedNews(filteredNews);
+            
+            console.log('Rendering home page:', {
+                totalNews: this.news.length,
+                filteredNews: filteredNews.length,
+                paginatedNews: paginatedNews.length,
+                currentPage: this.currentPage,
+                pageSize: this.pageSize
+            });
+            
+            this.renderNewsList(paginatedNews);
+            this.renderPagination(filteredNews.length);
+        } catch (error) {
+            console.error('Error rendering home page:', error);
+        }
     }
 
     // Get filtered news
@@ -600,6 +619,11 @@ class AntiFakeNewsSystem {
     renderNewsList(news) {
         const newsList = document.getElementById('newsList');
         
+        if (!newsList) {
+            console.error('newsList element not found');
+            return;
+        }
+        
         if (news.length === 0) {
             newsList.innerHTML = `
                 <div class="empty-state">
@@ -611,7 +635,7 @@ class AntiFakeNewsSystem {
         }
 
         newsList.innerHTML = news.map(item => `
-            <div class="news-item ${item.status}" onclick="app.showNewsDetail(${item.id})">
+            <div class="news-item ${item.status}" data-news-id="${item.id}">
                 <div class="news-header">
                     <div class="news-title">${item.title}</div>
                     <div class="news-status status-${item.status}">
@@ -625,12 +649,25 @@ class AntiFakeNewsSystem {
                 </div>
             </div>
         `).join('');
+        
+        // Add event listeners to news items
+        newsList.querySelectorAll('.news-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const newsId = parseInt(item.getAttribute('data-news-id'));
+                this.showNewsDetail(newsId);
+            });
+        });
     }
 
     // Render pagination
     renderPagination(totalItems) {
         const totalPages = Math.ceil(totalItems / this.pageSize);
         const pagination = document.getElementById('pagination');
+        
+        if (!pagination) {
+            console.error('pagination element not found');
+            return;
+        }
         
         if (totalPages <= 1) {
             pagination.innerHTML = '';
@@ -640,8 +677,9 @@ class AntiFakeNewsSystem {
         let paginationHTML = '';
         
         // Previous page button
+        const prevDisabled = this.currentPage === 1 ? 'disabled' : '';
         paginationHTML += `
-            <button ${this.currentPage === 1 ? 'disabled' : ''} onclick="app.goToPage(${this.currentPage - 1})">
+            <button ${prevDisabled} data-page="${this.currentPage - 1}" class="pagination-btn">
                 Previous
             </button>
         `;
@@ -649,8 +687,9 @@ class AntiFakeNewsSystem {
         // Page number buttons
         for (let i = 1; i <= totalPages; i++) {
             if (i === 1 || i === totalPages || (i >= this.currentPage - 2 && i <= this.currentPage + 2)) {
+                const activeClass = i === this.currentPage ? 'active' : '';
                 paginationHTML += `
-                    <button class="${i === this.currentPage ? 'active' : ''}" onclick="app.goToPage(${i})">
+                    <button class="pagination-btn ${activeClass}" data-page="${i}">
                         ${i}
                     </button>
                 `;
@@ -660,13 +699,24 @@ class AntiFakeNewsSystem {
         }
 
         // Next page button
+        const nextDisabled = this.currentPage === totalPages ? 'disabled' : '';
         paginationHTML += `
-            <button ${this.currentPage === totalPages ? 'disabled' : ''} onclick="app.goToPage(${this.currentPage + 1})">
+            <button ${nextDisabled} data-page="${this.currentPage + 1}" class="pagination-btn">
                 Next
             </button>
         `;
 
         pagination.innerHTML = paginationHTML;
+        
+        // Add event listeners to pagination buttons
+        pagination.querySelectorAll('.pagination-btn').forEach(btn => {
+            if (!btn.disabled) {
+                btn.addEventListener('click', () => {
+                    const page = parseInt(btn.getAttribute('data-page'));
+                    this.goToPage(page);
+                });
+            }
+        });
     }
 
     // Go to specified page
@@ -743,13 +793,19 @@ class AntiFakeNewsSystem {
                 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Submit Vote</button>
-                    <button type="button" onclick="app.showPage('newsDetailPage')" class="btn btn-secondary">Cancel</button>
+                    <button type="button" id="cancelVoteBtn" class="btn btn-secondary">Cancel</button>
                 </div>
             </form>
         `;
 
         // Bind voting form events
         document.getElementById('voteFormElement').addEventListener('submit', (e) => this.handleVote(e));
+        
+        // Bind cancel button
+        const cancelBtn = document.getElementById('cancelVoteBtn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => this.showPage('newsDetailPage'));
+        }
         
         // Bind voting option click events
         document.querySelectorAll('.vote-option').forEach(option => {
@@ -860,6 +916,11 @@ class AntiFakeNewsSystem {
         const totalPages = Math.ceil(totalComments / this.commentsPageSize);
         const pagination = document.getElementById('commentsPagination');
         
+        if (!pagination) {
+            console.error('commentsPagination element not found');
+            return;
+        }
+        
         if (totalPages <= 1) {
             pagination.innerHTML = '';
             return;
@@ -868,29 +929,42 @@ class AntiFakeNewsSystem {
         let paginationHTML = '';
         
         // Previous page button
+        const prevDisabled = this.commentsPage === 1 ? 'disabled' : '';
         paginationHTML += `
-            <button ${this.commentsPage === 1 ? 'disabled' : ''} onclick="app.goToCommentsPage(${this.commentsPage - 1})">
+            <button ${prevDisabled} data-comment-page="${this.commentsPage - 1}" class="comment-pagination-btn">
                 Previous
             </button>
         `;
 
         // Page number buttons
         for (let i = 1; i <= totalPages; i++) {
+            const activeClass = i === this.commentsPage ? 'active' : '';
             paginationHTML += `
-                <button class="${i === this.commentsPage ? 'active' : ''}" onclick="app.goToCommentsPage(${i})">
+                <button class="comment-pagination-btn ${activeClass}" data-comment-page="${i}">
                     ${i}
                 </button>
             `;
         }
 
         // Next page button
+        const nextDisabled = this.commentsPage === totalPages ? 'disabled' : '';
         paginationHTML += `
-            <button ${this.commentsPage === totalPages ? 'disabled' : ''} onclick="app.goToCommentsPage(${this.commentsPage + 1})">
+            <button ${nextDisabled} data-comment-page="${this.commentsPage + 1}" class="comment-pagination-btn">
                 Next
             </button>
         `;
 
         pagination.innerHTML = paginationHTML;
+        
+        // Add event listeners to comment pagination buttons
+        pagination.querySelectorAll('.comment-pagination-btn').forEach(btn => {
+            if (!btn.disabled) {
+                btn.addEventListener('click', () => {
+                    const page = parseInt(btn.getAttribute('data-comment-page'));
+                    this.goToCommentsPage(page);
+                });
+            }
+        });
     }
 
     // Go to specified comments page
@@ -940,5 +1014,14 @@ class AntiFakeNewsSystem {
     }
 }
 
-// Initialize application
-const app = new AntiFakeNewsSystem();
+// Initialize application when DOM is ready
+let app;
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        app = new AntiFakeNewsSystem();
+        window.app = app; // Make app globally accessible
+    });
+} else {
+    app = new AntiFakeNewsSystem();
+    window.app = app; // Make app globally accessible
+}
