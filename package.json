@@ -5,8 +5,8 @@
   "main": "index.html",
   "scripts": {
     "dev": "python -m http.server 8000 || python3 -m http.server 8000 || npx serve .",
-    "build": "echo 'No build step required for static site'",
-    "preview": "npx serve ."
+    "build": "node build.js",
+    "preview": "npx serve dist"
   },
   "keywords": ["fake-news", "social", "verification", "crowd-sourcing"],
   "author": "Social Anti-Fake News System",
