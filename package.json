@@ -4,14 +4,11 @@
   "description": "A social system for combating fake news through crowd verification",
   "main": "index.html",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "python -m http.server 8000 || python3 -m http.server 8000 || npx serve .",
+    "build": "echo 'No build step required for static site'",
+    "preview": "npx serve ."
   },
   "keywords": ["fake-news", "social", "verification", "crowd-sourcing"],
   "author": "Social Anti-Fake News System",
-  "license": "MIT",
-  "devDependencies": {
-    "vite": "^5.0.0"
-  }
+  "license": "MIT"
 }

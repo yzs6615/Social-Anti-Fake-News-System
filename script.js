@@ -16,9 +16,9 @@ class AntiFakeNewsSystem {
 
     init() {
         try {
-            this.loadMockData();
-            this.bindEvents();
-            this.renderHomePage();
+        this.loadMockData();
+        this.bindEvents();
+        this.renderHomePage();
             console.log('Application initialized successfully');
             console.log('News count:', this.news.length);
             console.log('Comments count:', this.comments.length);
@@ -589,8 +589,8 @@ class AntiFakeNewsSystem {
     // Render home page
     renderHomePage() {
         try {
-            const filteredNews = this.getFilteredNews();
-            const paginatedNews = this.getPaginatedNews(filteredNews);
+        const filteredNews = this.getFilteredNews();
+        const paginatedNews = this.getPaginatedNews(filteredNews);
             
             console.log('Rendering home page:', {
                 totalNews: this.news.length,
@@ -599,9 +599,9 @@ class AntiFakeNewsSystem {
                 currentPage: this.currentPage,
                 pageSize: this.pageSize
             });
-            
-            this.renderNewsList(paginatedNews);
-            this.renderPagination(filteredNews.length);
+        
+        this.renderNewsList(paginatedNews);
+        this.renderPagination(filteredNews.length);
         } catch (error) {
             console.error('Error rendering home page:', error);
         }
@@ -1057,7 +1057,7 @@ class AntiFakeNewsSystem {
                 loadingIndicator.style.display = 'none';
             }
             
-            const app = new AntiFakeNewsSystem();
+const app = new AntiFakeNewsSystem();
             window.app = app; // Make app globally accessible
             
             console.log('Application initialized successfully');
