@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "A social system for combating fake news through crowd verification",
   "main": "index.html",
+  "engines": {
+    "node": ">=18.x"
+  },
   "scripts": {
     "dev": "python -m http.server 8000 || python3 -m http.server 8000 || npx serve .",
     "build": "node build.js",
+    "vercel-build": "node build.js",
     "preview": "npx serve dist"
   },
   "keywords": ["fake-news", "social", "verification", "crowd-sourcing"],
