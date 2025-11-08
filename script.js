@@ -29,6 +29,8 @@ class AntiFakeNewsSystem {
 
     // Load mock data
     loadMockData() {
+        try {
+            console.log('Loading mock data...');
         const mockNews = [
             {
                 id: 1,
@@ -526,6 +528,15 @@ class AntiFakeNewsSystem {
 
         this.news = mockNews;
         this.comments = mockComments;
+        
+        console.log('Mock data loaded:', {
+            newsCount: this.news.length,
+            commentsCount: this.comments.length
+        });
+        } catch (error) {
+            console.error('Error loading mock data:', error);
+            throw error;
+        }
     }
 
     // Bind events
@@ -1015,13 +1026,74 @@ class AntiFakeNewsSystem {
 }
 
 // Initialize application when DOM is ready
-let app;
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        app = new AntiFakeNewsSystem();
-        window.app = app; // Make app globally accessible
-    });
-} else {
-    app = new AntiFakeNewsSystem();
-    window.app = app; // Make app globally accessible
-}
+(function() {
+    'use strict';
+    
+    console.log('Script.js loaded');
+    console.log('Document ready state:', document.readyState);
+    console.log('AntiFakeNewsSystem defined:', typeof AntiFakeNewsSystem !== 'undefined');
+    
+    function initializeApp() {
+        try {
+            console.log('Initializing application...');
+            
+            // Check if required elements exist
+            const requiredElements = ['newsList', 'homePage', 'pagination'];
+            const missingElements = requiredElements.filter(id => !document.getElementById(id));
+            
+            if (missingElements.length > 0) {
+                console.error('Missing required elements:', missingElements);
+                return;
+            }
+            
+            if (typeof AntiFakeNewsSystem === 'undefined') {
+                console.error('AntiFakeNewsSystem class is not defined!');
+                return;
+            }
+            
+            // Hide loading indicator
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+            
+            const app = new AntiFakeNewsSystem();
+            window.app = app; // Make app globally accessible
+            
+            console.log('Application initialized successfully');
+            console.log('App instance:', app);
+            
+            // Verify news data loaded
+            setTimeout(() => {
+                if (app && app.news && app.news.length > 0) {
+                    console.log('News data loaded:', app.news.length, 'items');
+                } else {
+                    console.error('News data not loaded!');
+                    const newsList = document.getElementById('newsList');
+                    if (newsList) {
+                        newsList.innerHTML = '<div class="empty-state"><h3>Data Loading Error</h3><p>News data failed to load. Please refresh the page.</p></div>';
+                    }
+                }
+            }, 100);
+            
+        } catch (error) {
+            console.error('Error initializing application:', error);
+            console.error('Error stack:', error.stack);
+            
+            const newsList = document.getElementById('newsList');
+            if (newsList) {
+                newsList.innerHTML = '<div class="empty-state"><h3>Initialization Error</h3><p>' + error.message + '</p><p>Please check the browser console for details.</p></div>';
+            }
+        }
+    }
+    
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        console.log('Waiting for DOMContentLoaded...');
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+        console.log('DOM already ready, initializing immediately...');
+        // Use setTimeout to ensure all scripts are loaded
+        setTimeout(initializeApp, 0);
+    }
+})();
