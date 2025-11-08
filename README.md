@@ -13,7 +13,7 @@ To be determined
 
 ### The URL of the Deployed Website
 
-To be deployed
+social-anti-fake-news-system.vercel.app
 
 ---
 
