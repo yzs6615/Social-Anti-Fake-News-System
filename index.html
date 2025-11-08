@@ -128,8 +128,39 @@
     </div>
 
     <script>
-        // Add loading indicator
-        console.log('HTML loaded, waiting for script...');
+        // Diagnostic script
+        console.log('=== DIAGNOSTIC INFO ===');
+        console.log('Page URL:', window.location.href);
+        console.log('Document ready state:', document.readyState);
+        
+        // Test resource loading
+        function testResource(url, name) {
+            return fetch(url, { method: 'HEAD' })
+                .then(response => {
+                    console.log(name + ':', response.status === 200 ? '✓ Loaded' : '✗ Failed (' + response.status + ')');
+                    return response.status === 200;
+                })
+                .catch(error => {
+                    console.error(name + ':', '✗ Error -', error.message);
+                    return false;
+                });
+        }
+        
+        // Test all resources
+        window.addEventListener('load', function() {
+            console.log('Testing resources...');
+            Promise.all([
+                testResource('script.js', 'script.js'),
+                testResource('styles.css', 'styles.css')
+            ]).then(results => {
+                if (!results[0] || !results[1]) {
+                    const newsList = document.getElementById('newsList');
+                    if (newsList) {
+                        newsList.innerHTML = '<div class="empty-state"><h3>Resource Loading Failed</h3><p>One or more resources failed to load. Check the console above for details.</p><p>script.js: ' + (results[0] ? 'OK' : 'FAILED') + '</p><p>styles.css: ' + (results[1] ? 'OK' : 'FAILED') + '</p></div>';
+                    }
+                }
+            });
+        });
         
         // Error handler for script loading
         window.addEventListener('error', function(e) {
@@ -144,18 +175,9 @@
             
             const newsList = document.getElementById('newsList');
             if (newsList) {
-                newsList.innerHTML = '<div class="empty-state"><h3>Error Loading Application</h3><p>Error: ' + e.message + '</p><p>Please check the browser console for details.</p></div>';
+                newsList.innerHTML = '<div class="empty-state"><h3>Error Loading Application</h3><p>Error: ' + e.message + '</p><p>File: ' + (e.filename || 'unknown') + '</p><p>Please check the browser console for details.</p></div>';
             }
         }, true);
-        
-        // Check if resources are loading
-        window.addEventListener('load', function() {
-            console.log('Page fully loaded');
-            const scripts = document.querySelectorAll('script[src]');
-            scripts.forEach(script => {
-                console.log('Script src:', script.src, 'loaded:', script.src ? 'checking...' : 'inline');
-            });
-        });
     </script>
     <script src="script.js" onerror="console.error('Failed to load script.js'); document.getElementById('newsList').innerHTML='<div class=\'empty-state\'><h3>Script Loading Failed</h3><p>script.js could not be loaded. Please check the file path.</p></div>';"></script>
     <script>
