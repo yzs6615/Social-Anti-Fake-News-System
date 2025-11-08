@@ -1,117 +1,117 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>社交反假新闻系统</title>
+    <title>Social Anti-Fake News System</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="app">
-        <!-- 导航栏 -->
+        <!-- Navigation Bar -->
         <nav class="navbar">
             <div class="nav-container">
-                <h1 class="nav-title">社交反假新闻系统</h1>
+                <h1 class="nav-title">Social Anti-Fake News System</h1>
                 <div class="nav-actions">
-                    <button id="addNewsBtn" class="btn btn-primary">添加新闻</button>
+                    <button id="addNewsBtn" class="btn btn-primary">Add News</button>
                 </div>
             </div>
         </nav>
 
-        <!-- 主要内容区域 -->
+        <!-- Main Content Area -->
         <main class="main-content">
-            <!-- 首页 -->
+            <!-- Home Page -->
             <div id="homePage" class="page active">
                 <div class="page-header">
-                    <h2>新闻列表</h2>
+                    <h2>News List</h2>
                     <div class="filters">
                         <select id="statusFilter" class="filter-select">
-                            <option value="all">全部新闻</option>
-                            <option value="fake">假新闻</option>
-                            <option value="real">非假新闻</option>
+                            <option value="all">All News</option>
+                            <option value="fake">Fake News</option>
+                            <option value="real">Real News</option>
                         </select>
                         <select id="pageSizeSelect" class="filter-select">
-                            <option value="5">每页5条</option>
-                            <option value="10" selected>每页10条</option>
-                            <option value="20">每页20条</option>
+                            <option value="5">5 per page</option>
+                            <option value="10" selected>10 per page</option>
+                            <option value="20">20 per page</option>
                         </select>
                     </div>
                 </div>
                 <div id="newsList" class="news-list">
-                    <!-- 新闻列表将在这里动态生成 -->
+                    <!-- News list will be dynamically generated here -->
                 </div>
                 <div id="pagination" class="pagination">
-                    <!-- 分页控件将在这里动态生成 -->
+                    <!-- Pagination controls will be dynamically generated here -->
                 </div>
             </div>
 
-            <!-- 新闻详情页 -->
+            <!-- News Detail Page -->
             <div id="newsDetailPage" class="page">
                 <div class="page-header">
-                    <button id="backToHome" class="btn btn-secondary">← 返回列表</button>
-                    <h2 id="detailTitle">新闻详情</h2>
+                    <button id="backToHome" class="btn btn-secondary">← Back to List</button>
+                    <h2 id="detailTitle">News Detail</h2>
                 </div>
                 <div id="newsDetail" class="news-detail">
-                    <!-- 新闻详情将在这里动态生成 -->
+                    <!-- News detail will be dynamically generated here -->
                 </div>
                 <div class="detail-actions">
-                    <button id="voteBtn" class="btn btn-primary">投票判断</button>
-                    <button id="viewCommentsBtn" class="btn btn-secondary">查看评论</button>
+                    <button id="voteBtn" class="btn btn-primary">Vote</button>
+                    <button id="viewCommentsBtn" class="btn btn-secondary">View Comments</button>
                 </div>
             </div>
 
-            <!-- 投票页面 -->
+            <!-- Voting Page -->
             <div id="votePage" class="page">
                 <div class="page-header">
-                    <button id="backToDetail" class="btn btn-secondary">← 返回详情</button>
-                    <h2>投票判断</h2>
+                    <button id="backToDetail" class="btn btn-secondary">← Back to Detail</button>
+                    <h2>Vote</h2>
                 </div>
                 <div id="voteForm" class="vote-form">
-                    <!-- 投票表单将在这里动态生成 -->
+                    <!-- Voting form will be dynamically generated here -->
                 </div>
             </div>
 
-            <!-- 评论页面 -->
+            <!-- Comments Page -->
             <div id="commentsPage" class="page">
                 <div class="page-header">
-                    <button id="backToDetailFromComments" class="btn btn-secondary">← 返回详情</button>
-                    <h2>评论列表</h2>
+                    <button id="backToDetailFromComments" class="btn btn-secondary">← Back to Detail</button>
+                    <h2>Comments List</h2>
                 </div>
                 <div id="commentsList" class="comments-list">
-                    <!-- 评论列表将在这里动态生成 -->
+                    <!-- Comments list will be dynamically generated here -->
                 </div>
                 <div id="commentsPagination" class="pagination">
-                    <!-- 评论分页控件将在这里动态生成 -->
+                    <!-- Comments pagination controls will be dynamically generated here -->
                 </div>
             </div>
 
-            <!-- 添加新闻模态框 -->
+            <!-- Add News Modal -->
             <div id="addNewsModal" class="modal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3>添加新闻</h3>
+                        <h3>Add News</h3>
                         <button id="closeModal" class="close-btn">&times;</button>
                     </div>
                     <form id="addNewsForm" class="modal-form">
                         <div class="form-group">
-                            <label for="newsTitle">新闻标题</label>
+                            <label for="newsTitle">News Title</label>
                             <input type="text" id="newsTitle" required>
                         </div>
                         <div class="form-group">
-                            <label for="newsContent">新闻内容</label>
+                            <label for="newsContent">News Content</label>
                             <textarea id="newsContent" rows="5" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="newsImage">事件图片URL（可选）</label>
+                            <label for="newsImage">Event Image URL (Optional)</label>
                             <input type="url" id="newsImage">
                         </div>
                         <div class="form-group">
-                            <label for="publisherName">发布人姓名</label>
+                            <label for="publisherName">Publisher Name</label>
                             <input type="text" id="publisherName" required>
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">发布新闻</button>
-                            <button type="button" id="cancelAdd" class="btn btn-secondary">取消</button>
+                            <button type="submit" class="btn btn-primary">Publish News</button>
+                            <button type="button" id="cancelAdd" class="btn btn-secondary">Cancel</button>
                         </div>
                     </form>
                 </div>

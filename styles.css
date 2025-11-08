@@ -1,4 +1,4 @@
-/* 基础样式重置 */
+/* Base style reset */
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +12,7 @@ body {
     background-color: #f5f5f5;
 }
 
-/* 导航栏样式 */
+/* Navigation bar styles */
 .navbar {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -34,7 +34,7 @@ body {
     font-weight: 600;
 }
 
-/* 按钮样式 */
+/* Button styles */
 .btn {
     padding: 0.5rem 1rem;
     border: none;
@@ -86,14 +86,14 @@ body {
     background: #218838;
 }
 
-/* 主要内容区域 */
+/* Main content area */
 .main-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1rem;
 }
 
-/* 页面切换 */
+/* Page switching */
 .page {
     display: none;
 }
@@ -102,7 +102,7 @@ body {
     display: block;
 }
 
-/* 页面头部 */
+/* Page header */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -117,7 +117,7 @@ body {
     font-size: 1.8rem;
 }
 
-/* 筛选器样式 */
+/* Filter styles */
 .filters {
     display: flex;
     gap: 1rem;
@@ -132,7 +132,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* 新闻列表样式 */
+/* News list styles */
 .news-list {
     display: grid;
     gap: 1.5rem;
@@ -227,7 +227,7 @@ body {
     opacity: 0.8;
 }
 
-/* 新闻详情样式 */
+/* News detail styles */
 .news-detail {
     background: white;
     border-radius: 12px;
@@ -274,7 +274,7 @@ body {
     margin-top: 1rem;
 }
 
-/* 投票表单样式 */
+/* Voting form styles */
 .vote-form {
     background: white;
     border-radius: 12px;
@@ -346,7 +346,7 @@ body {
     justify-content: flex-end;
 }
 
-/* 评论列表样式 */
+/* Comments list styles */
 .comments-list {
     display: grid;
     gap: 1rem;
@@ -409,7 +409,7 @@ body {
     margin-top: 0.5rem;
 }
 
-/* 分页样式 */
+/* Pagination styles */
 .pagination {
     display: flex;
     justify-content: center;
@@ -443,7 +443,7 @@ body {
     cursor: not-allowed;
 }
 
-/* 模态框样式 */
+/* Modal styles */
 .modal {
     display: none;
     position: fixed;
@@ -505,7 +505,7 @@ body {
     padding: 1.5rem;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;
@@ -541,7 +541,7 @@ body {
     }
 }
 
-/* 加载动画 */
+/* Loading animation */
 .loading {
     display: flex;
     justify-content: center;
@@ -563,7 +563,7 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* 空状态样式 */
+/* Empty state styles */
 .empty-state {
     text-align: center;
     padding: 3rem;
