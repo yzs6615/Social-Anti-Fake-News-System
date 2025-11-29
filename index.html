@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Anti-Fake News System</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
-    <link rel="stylesheet" href="styles.css" onerror="console.error('Failed to load styles.css');">
+    <script type="module" src="/src/main.js"></script>
+    <script>
+        // Configure API base URL here for production
+        window.API_BASE_URL = 'https://project2-backend-p60pcd75k-zg277s-projects.vercel.app/api'; // window.API_BASE_URL = 'https://your-backend-url.vercel.app/api';
+    </script>
 </head>
 <body>
     <div id="app">
-        <!-- Loading indicator (will be removed by JS) -->
-        <div id="loadingIndicator" style="text-align: center; padding: 2rem;">
-            <p>Loading application...</p>
-        </div>
         <!-- Navigation Bar -->
         <nav class="navbar">
             <div class="nav-container">
@@ -30,6 +29,7 @@
                 <div class="page-header">
                     <h2>News List</h2>
                     <div class="filters">
+                        <input type="text" id="searchInput" class="filter-input" placeholder="Search by title, content, or publisher...">
                         <select id="statusFilter" class="filter-select">
                             <option value="all">All News</option>
                             <option value="fake">Fake News</option>
@@ -44,9 +44,6 @@
                 </div>
                 <div id="newsList" class="news-list">
                     <!-- News list will be dynamically generated here -->
-                    <div style="text-align: center; padding: 2rem; color: #666;">
-                        <p>Initializing news list...</p>
-                    </div>
                 </div>
                 <div id="pagination" class="pagination">
                     <!-- Pagination controls will be dynamically generated here -->
@@ -57,10 +54,10 @@
             <div id="newsDetailPage" class="page">
                 <div class="page-header">
                     <button id="backToHome" class="btn btn-secondary">← Back to List</button>
-                    <h2 id="detailTitle">News Detail</h2>
+                    <h2 id="detailTitle">News Details</h2>
                 </div>
                 <div id="newsDetail" class="news-detail">
-                    <!-- News detail will be dynamically generated here -->
+                    <!-- News details will be dynamically generated here -->
                 </div>
                 <div class="detail-actions">
                     <button id="voteBtn" class="btn btn-primary">Vote</button>
@@ -71,7 +68,7 @@
             <!-- Voting Page -->
             <div id="votePage" class="page">
                 <div class="page-header">
-                    <button id="backToDetail" class="btn btn-secondary">← Back to Detail</button>
+                    <button id="backToDetail" class="btn btn-secondary">← Back to Details</button>
                     <h2>Vote</h2>
                 </div>
                 <div id="voteForm" class="vote-form">
@@ -82,7 +79,7 @@
             <!-- Comments Page -->
             <div id="commentsPage" class="page">
                 <div class="page-header">
-                    <button id="backToDetailFromComments" class="btn btn-secondary">← Back to Detail</button>
+                    <button id="backToDetailFromComments" class="btn btn-secondary">← Back to Details</button>
                     <h2>Comments List</h2>
                 </div>
                 <div id="commentsList" class="comments-list">
@@ -127,72 +124,6 @@
         </main>
     </div>
 
-    <script>
-        // Diagnostic script
-        console.log('=== DIAGNOSTIC INFO ===');
-        console.log('Page URL:', window.location.href);
-        console.log('Document ready state:', document.readyState);
-        
-        // Test resource loading
-        function testResource(url, name) {
-            return fetch(url, { method: 'HEAD' })
-                .then(response => {
-                    console.log(name + ':', response.status === 200 ? '✓ Loaded' : '✗ Failed (' + response.status + ')');
-                    return response.status === 200;
-                })
-                .catch(error => {
-                    console.error(name + ':', '✗ Error -', error.message);
-                    return false;
-                });
-        }
-        
-        // Test all resources
-        window.addEventListener('load', function() {
-            console.log('Testing resources...');
-            Promise.all([
-                testResource('script.js', 'script.js'),
-                testResource('styles.css', 'styles.css')
-            ]).then(results => {
-                if (!results[0] || !results[1]) {
-                    const newsList = document.getElementById('newsList');
-                    if (newsList) {
-                        newsList.innerHTML = '<div class="empty-state"><h3>Resource Loading Failed</h3><p>One or more resources failed to load. Check the console above for details.</p><p>script.js: ' + (results[0] ? 'OK' : 'FAILED') + '</p><p>styles.css: ' + (results[1] ? 'OK' : 'FAILED') + '</p></div>';
-                    }
-                }
-            });
-        });
-        
-        // Error handler for script loading
-        window.addEventListener('error', function(e) {
-            console.error('Script error:', e);
-            console.error('Error details:', {
-                message: e.message,
-                filename: e.filename,
-                lineno: e.lineno,
-                colno: e.colno,
-                error: e.error
-            });
-            
-            const newsList = document.getElementById('newsList');
-            if (newsList) {
-                newsList.innerHTML = '<div class="empty-state"><h3>Error Loading Application</h3><p>Error: ' + e.message + '</p><p>File: ' + (e.filename || 'unknown') + '</p><p>Please check the browser console for details.</p></div>';
-            }
-        }, true);
-    </script>
-    <script src="script.js" onerror="console.error('Failed to load script.js'); document.getElementById('newsList').innerHTML='<div class=\'empty-state\'><h3>Script Loading Failed</h3><p>script.js could not be loaded. Please check the file path.</p></div>';"></script>
-    <script>
-        // Verify script loaded
-        setTimeout(function() {
-            if (typeof AntiFakeNewsSystem === 'undefined') {
-                console.error('AntiFakeNewsSystem class not found!');
-                const newsList = document.getElementById('newsList');
-                if (newsList) {
-                    newsList.innerHTML = '<div class="empty-state"><h3>JavaScript Error</h3><p>The application script failed to load. Please check the browser console and Network tab.</p></div>';
-                }
-            } else {
-                console.log('AntiFakeNewsSystem class found!');
-            }
-        }, 100);
-    </script>
+    
 </body>
 </html>

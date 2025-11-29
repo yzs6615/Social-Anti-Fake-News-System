@@ -1,4 +1,4 @@
-/* Base style reset */
+/* Basic style reset */
 * {
     margin: 0;
     padding: 0;
@@ -130,6 +130,21 @@ body {
     border-radius: 6px;
     background: white;
     font-size: 0.9rem;
+}
+
+.filter-input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+    min-width: 250px;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 /* News list styles */
